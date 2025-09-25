@@ -2,7 +2,14 @@ const API_KEY = import.meta.env.VITE_VIRTUALCROSSING_WEATHER_API_KEY;
 const BASE_URL = 'https://weather.visualcrossing.com/VisualCrossingWebServices/rest/services/timeline/';
 
 export const fetchWeatherData = async (location) => {
-  const url = `${BASE_URL}${encodeURIComponent(location)}?unitGroup=metric&key=${API_KEY}&contentType=json`;
+  const today = new Date();
+  const start = new Date(today);
+  start.setDate(today.getDate() - 3);
+  const end = new Date(today);
+  end.setDate(today.getDate() + 3);
+  const startStr = start.toISOString().split('T')[0];
+  const endStr = end.toISOString().split('T')[0];
+  const url = `${BASE_URL}${encodeURIComponent(location)}/${startStr}/${endStr}?unitGroup=metric&key=${API_KEY}&contentType=json`;
 
   try {
     const response = await fetch(url);

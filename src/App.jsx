@@ -2,7 +2,7 @@ import SearchBar from './components/SearchBar'
 import CurrentWeatherCard from './components/CurrentWeatherCard'
 import Loading from './components/Loading'
 import { useWeather } from './hooks/useWeather'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import DynamicBackground from './components/DynamicBackground'
 import Sidebar from './components/Sidebar'
 import ForecastChart from './components/ForecastChart'
@@ -10,6 +10,7 @@ import ForecastChart from './components/ForecastChart'
 
 function App() {
   const {weatherData, loading, error, getWeather} = useWeather();
+  const [recentSearches, setRecentSearches] = useState([]);
 
   const reverseGeocode = async (lat, lng) => {
     try {
@@ -25,6 +26,26 @@ function App() {
       console.error('Reverse geocoding failed:', error);
       return `${lat},${lng}`;
     }
+  };
+
+  useEffect(() => {
+    const stored = localStorage.getItem('recentSearches');
+    if (stored) {
+      setRecentSearches(JSON.parse(stored));
+    }
+  }, []);
+
+  const addRecentSearch = (address) => {
+    setRecentSearches(prev => {
+      const newList = [address, ...prev.filter(item => item !== address)].slice(0, 5);
+      localStorage.setItem('recentSearches', JSON.stringify(newList));
+      return newList;
+    });
+  };
+
+  const handleSearch = (address) => {
+    addRecentSearch(address);
+    getWeather(address);
   };
 
   useEffect(() => {
@@ -59,18 +80,18 @@ function App() {
       <DynamicBackground condition={weatherData?.currentConditions.icon} />
       <div className="min-h-screen text-white p-4 grid grid-cols-1 lg:grid-cols-4 gap-4">
         <div className="lg:col-span-1">
-          {weatherData && <Sidebar statusData={weatherData.currentConditions} days={weatherData.days} />}
+          {weatherData && <Sidebar statusData={weatherData.currentConditions} days={weatherData.days} recentSearches={recentSearches} onSearch={handleSearch} />}
         </div>
-        <main className="lg:col-span-3 flex flex-col  justify-center gap-4">
-          <SearchBar onSearch={getWeather} />
+        <main className="lg:col-span-3 flex flex-col items-center justify-center gap-6">
+          <SearchBar onSearch={handleSearch} />
           {error && <p className="text-xl text-red-500 text-center">Error: {error}</p>}
           {weatherData && (
-            <>
+            <div className="w-full max-w-4xl space-y-6">
               <CurrentWeatherCard data={weatherData} />
               <div className="glass rounded-2xl p-6">
                 <ForecastChart days={weatherData.days} />
               </div>
-            </>
+            </div>
           )}
         </main>
       </div>
