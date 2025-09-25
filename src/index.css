@@ -1,0 +1,29 @@
+@import "tailwindcss";
+
+body {
+  font-family: 'Inter', sans-serif;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-hover:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
+}
+
+.temp-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.uv-gauge-low { background: linear-gradient(to right, #10b981, #34d399); }
+.uv-gauge-moderate { background: linear-gradient(to right, #f59e0b, #fbbf24); }
+.uv-gauge-high { background: linear-gradient(to right, #ef4444, #f87171); }
