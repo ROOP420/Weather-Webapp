@@ -6,8 +6,6 @@
 
 A sleek, modern weather dashboard built with **React + Vite** that provides real-time weather updates, forecasts, and location-based insights with an intuitive UI.  
 
-![WeatherWise Preview](./screenshot.png)  
-*(Replace with your own screenshot path — e.g., `/assets/screenshot.png`)*  
 
 ---
 

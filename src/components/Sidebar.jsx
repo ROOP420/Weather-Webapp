@@ -19,9 +19,9 @@ const Sidebar = ({ statusData, days, recentSearches, onSearch }) => {
     >
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold temp-gradient">WeatherWise</h2>
-        <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
+        {/* <button className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors">
           <RefreshCw className="w-5 h-5 text-white" />
-        </button>
+        </button> */}
       </div>
       {enhancedStatusData && <StatusCard statusData={enhancedStatusData} />}
       {recentSearches && recentSearches.length > 0 && (
